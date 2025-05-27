@@ -18,8 +18,11 @@ export default {
 
   theme: {
 
-    extend: {},
-
+    extend: {
+      fontFamily: {
+        tajawal: ['Tajawal', 'sans-serif'],
+      },
+    },
   },
 
   plugins: [mtConfig],
