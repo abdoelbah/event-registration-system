@@ -1,17 +1,22 @@
-const mongoose =require('mongoose')
-const schema = mongoose.Schema
-const user = new schema({
-    firstname:{
-        type:String
-    },
-    lastname:{
-        type:String
-    },
-    email:{
-        type:String
-    }
-})
+const mongoose = require('mongoose');
+const AutoIncrement = require('mongoose-sequence')(mongoose);
 
-const attendorModel = mongoose.model('Attendors',user)
+const attendorSchema = new mongoose.Schema({
+    firstname: { type: String,
+                required: true 
+            },
+    lastname: { type: String, 
+                required: true 
+            },
+    email: { type: String,
+            required: true,
+            unique: true 
+        },
+}, {
+    timestamps: true
+});
 
-module.exports = attendorModel
+attendorSchema.plugin(AutoIncrement, { inc_field: 'attendorId' });
+
+module.exports = mongoose.model('Attendor', attendorSchema);
+

@@ -15,7 +15,7 @@ exports.Register = async (req, res) => {
             return
         }
 
-        const attendor = attendorModel.findOne({email})
+        const attendor =await attendorModel.findOne({email})
         if(attendor){
             res.json({
                 msg:"this user is already registered"
@@ -30,10 +30,12 @@ exports.Register = async (req, res) => {
             lastname,
             email
         })
-        
-        await newAttendor.save()
-
-        sendEmailTicket(firstname,email)
+        if(newAttendor){
+            res.json({
+                msg:"Attendor registered"
+            })
+        //       sendEmailTicket(firstname,email)
+        }
 
 
         

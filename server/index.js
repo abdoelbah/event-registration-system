@@ -8,8 +8,8 @@ const app = express()
 const Router = require('./router/router')
 
 const port = process.env.PORT || 3000
-// const mongoUri = process.env.MONGO_URL_DEV
-const mongoUri = process.env.MONGO_URL_PROD
+const mongoUri = process.env.MONGO_URL_DEV
+// const mongoUri = process.env.MONGO_URL_PROD
 console.log(mongoUri)
 console.log(port)
 
