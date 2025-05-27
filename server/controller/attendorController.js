@@ -34,7 +34,8 @@ exports.Register = async (req, res) => {
             res.json({
                 msg:"Attendor registered"
             })
-        //       sendEmailTicket(firstname,email)
+            
+                sendEmailTicket(firstname,email,newAttendor.attendorId)
         }
 
 

@@ -2,7 +2,7 @@ const nodemailer = require("nodemailer");
 require('dotenv').config()
 
 
-exports.sendEmailTicket = async (email, firstname) => {
+exports.sendEmailTicket = async (email, firstname ,attendorId) => {
     try {
 
         const transporter = nodemailer.createTransport({
@@ -33,19 +33,19 @@ exports.sendEmailTicket = async (email, firstname) => {
               </style>
             </head>
             <body style="width:100%;font-family:Cairo, arial, 'helvetica neue', helvetica, sans-serif;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;padding:0;Margin:0;background-color:#FAFAFA;">
-              <div style="background-color:#FAFAFA; padding:20px;">
+              <div style="background-image:url('../public/Background 1.jpg'); padding:20px;">
                 <div style="background-color:#ffffff; max-width:600px; margin:0 auto; padding:20px; box-shadow:0 0 10px rgba(0, 0, 0, 0.1); text-align:center;">
                   <div style="margin-bottom:20px;">
-                    <img src="https://ehuyqes.stripocdn.email/content/guids/CABINET_53ccef04358a8e5182fcedd4f77c91ee8ba99c627d5aa799e1958c886de36fdf/images/mwjalogo.png" alt="Logo" style="width:200px;">
+                    <img src="../public/Art Logo 2.png" alt="Logo" style="width:200px;">
                   </div>
                   <div style="margin-bottom:20px;">
-                    <img src="https://ehuyqes.stripocdn.email/content/guids/CABINET_67e080d830d87c17802bd9b4fe1c0912/images/55191618237638326.png" alt="" style="width:100px;">
-                    <h1 style="font-size:46px; font-weight:bold; color:#274a79; margin:0 0 10px 0; font-family:Cairo, arial, 'helvetica neue', helvetica, sans-serif;">قم بتأكيد حسابك</h1>
-                    <p style="color:#274a79; font-size:14px; line-height:21px; margin:5px 0; font-family:Cairo, arial, 'helvetica neue', helvetica, sans-serif;">شكراً لك على إنشاء حساب معنا. نحن متحمسون لانضمامك إلينا.</p>
-                    <p style="color:#274a79; font-size:14px; line-height:21px; margin:5px 0; font-family:Cairo, arial, 'helvetica neue', helvetica, sans-serif;">للبدء، يرجى التحقق من عنوان بريدك الإلكتروني بالنقر على الزر أدناه&nbsp;</p>
-                    <a href="${link}" style="display:inline-block; padding:10px 30px; background-color:#274a79; color:#FFFFFF; font-size:20px; border-radius:6px; text-decoration:none; margin:10px 0; font-family:Cairo, arial, 'helvetica neue', helvetica, sans-serif;">انقر لتأكيد حسابك</a>
-                    <p style="color:#274a79; font-size:14px; line-height:21px; margin:5px 0; font-family:Cairo, arial, 'helvetica neue', helvetica, sans-serif;">إذا لم يعمل الرابط، يمكنك أيضًا نسخ ولصق العنوان التالي في المتصفح الخاص بك</p>
-                    <p style="color:#274a79; font-size:14px; line-height:21px; margin:5px 0; font-family:Cairo, arial, 'helvetica neue', helvetica, sans-serif;">${link}</p>
+                    <h1 style="font-size:46px; font-weight:bold; color:#274a79; margin:0 0 10px 0; font-family:Cairo, arial, 'helvetica neue', helvetica, sans-serif;">شكرا يا ${firstname} على اهتمامك بفعاليتنا</h1>
+                    <p style="color:#274a79; font-size:14px; line-height:21px; margin:5px 0; font-family:Cairo, arial, 'helvetica neue', helvetica, sans-serif;">. نحن متحمسون للقاءك</p>
+                    <p style="color:#274a79; font-size:14px; line-height:21px; margin:5px 0; font-family:Cairo, arial, 'helvetica neue', helvetica, sans-serif;">رقم التسجيل</p>
+                    <p style="color:#274a79; font-size:14px; line-height:21px; margin:5px 0; font-family:Cairo, arial, 'helvetica neue', helvetica, sans-serif;">${attendorId}</p>
+                    <a  style="display:inline-block; padding:10px 30px; background-color:#274a79; color:#FFFFFF; font-size:20px; border-radius:6px; text-decoration:none; margin:10px 0; font-family:Cairo, arial, 'helvetica neue', helvetica, sans-serif;">الاحد 1/يونيو/2025</a>
+                    <a  style="display:inline-block; padding:10px 30px; background-color:#274a79; color:#FFFFFF; font-size:20px; border-radius:6px; text-decoration:none; margin:10px 0; font-family:Cairo, arial, 'helvetica neue', helvetica, sans-serif;">مساء 6:00</a>
+                    <p style="color:#274a79; font-size:14px; line-height:21px; margin:5px 0; font-family:Cairo, arial, 'helvetica neue', helvetica, sans-serif;">الموقع:المدرج الخارجي</p>
                   </div>
                 </div>
               </div>
