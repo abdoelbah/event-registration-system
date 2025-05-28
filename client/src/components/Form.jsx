@@ -70,29 +70,24 @@ export default function FormDemo() {
   async function onSubmit(data) {
     try {
       const response = await axios.post(`${API_URL}/register`, data);
-
-      // Handle custom API response format
+  
       if (response.status === 200) {
         const resData = response.data;
         if (resData?.msg && resData.msg.toLowerCase().includes("already")) {
           alert("هذا المستخدم مسجل بالفعل.");
         } else {
-          alert("تم التسجيل بنجاح!");
+          alert("تم التسجيل بنجاح! سيتم إرسال بريد إلكتروني يحتوي على تذكرتك.");
           reset();
         }
       } else {
         alert("حدث خطأ غير متوقع في الخادم.");
       }
     } catch (error) {
-      // Handle both client and server errors
       if (error.response) {
-        // Server responded with an error status code
         alert(`خطأ من الخادم: ${error.response.data?.msg || "حدث خطأ أثناء الإرسال."}`);
       } else if (error.request) {
-        // Request made but no response received
         alert("تعذر الوصول إلى الخادم. تحقق من الاتصال.");
       } else {
-        // Other error (config, etc.)
         alert("حدث خطأ: " + error.message);
       }
       console.error("تفاصيل الخطأ:", error);

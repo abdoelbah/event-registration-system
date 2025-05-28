@@ -4,7 +4,7 @@ import CountdownTimer from './components/CountDownTimer';
 import Background from './assets/Wallpaper 4K raw.jpg';
 import LOGO from './assets/NTD 2025 Logo-04.svg';
 import FooterWithLogo from './components/Footer';
-import timeStamp from './assets/Date Tag Stamp.png'
+
 
 
 
