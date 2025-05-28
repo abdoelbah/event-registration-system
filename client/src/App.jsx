@@ -41,7 +41,7 @@ function App() {
       </main>
 
       {/* Footer always at the bottom */}
-      <footer className="w-full px-20 pb-12">
+      <footer className="w-full px-10 pt-10 pb-12">
         <FooterWithLogo />
       </footer>
     </div>

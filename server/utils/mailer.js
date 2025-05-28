@@ -1,62 +1,137 @@
 const nodemailer = require("nodemailer");
-require('dotenv').config()
+require('dotenv').config();
 
+exports.sendEmailTicket = async (attendor) => {
+  try {
+    const { attendorId, firstname, email } = attendor;
 
-exports.sendEmailTicket = async (email, firstname ,attendorId) => {
-    try {
+    const transporter = nodemailer.createTransport({
+      host: process.env.HOST,
+      port: 465,
+      secure: true,
+      auth: {
+        user: process.env.ADMIN_EMAIL,
+        pass: process.env.ADMIN_PASSKEY
+      }
+    });
 
-        const transporter = nodemailer.createTransport({
-            host: process.env.HOST, // replace with your mail server
-            port: 465, // replace with your mail server port
-            secure: true, // use SSL
-            auth: {
-                user: process.env.ADMIN_EMAIL, // your email address
-                pass: process.env.ADMIN_PASSKEY  // your email password
-            }
-        });
+    const htmlContent = 
+    `
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
 
-        const info = await transporter.sendMail({
-            from: process.env.ADMIN_EMAIL,
-            to: email,
-            subject: "invitation",
-            html: `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-            <html dir="ltr" xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office" lang="ar">
-            <head>
-              <meta charset="UTF-8">
-              <meta content="width=device-width, initial-scale=1" name="viewport">
-              <meta name="x-apple-disable-message-reformatting">
-              <meta http-equiv="X-UA-Compatible" content="IE=edge">
-              <meta content="telephone=no" name="format-detection">
-              <title>New Message</title>
-              <style>
-                @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
-              </style>
-            </head>
-            <body style="width:100%;font-family:Cairo, arial, 'helvetica neue', helvetica, sans-serif;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;padding:0;Margin:0;background-color:#FAFAFA;">
-              <div style="background-image:url('../public/Background 1.jpg'); padding:20px;">
-                <div style="background-color:#ffffff; max-width:600px; margin:0 auto; padding:20px; box-shadow:0 0 10px rgba(0, 0, 0, 0.1); text-align:center;">
-                  <div style="margin-bottom:20px;">
-                    <img src="../public/Art Logo 2.png" alt="Logo" style="width:200px;">
-                  </div>
-                  <div style="margin-bottom:20px;">
-                    <h1 style="font-size:46px; font-weight:bold; color:#274a79; margin:0 0 10px 0; font-family:Cairo, arial, 'helvetica neue', helvetica, sans-serif;">شكرا يا ${firstname} على اهتمامك بفعاليتنا</h1>
-                    <p style="color:#274a79; font-size:14px; line-height:21px; margin:5px 0; font-family:Cairo, arial, 'helvetica neue', helvetica, sans-serif;">. نحن متحمسون للقاءك</p>
-                    <p style="color:#274a79; font-size:14px; line-height:21px; margin:5px 0; font-family:Cairo, arial, 'helvetica neue', helvetica, sans-serif;">رقم التسجيل</p>
-                    <p style="color:#274a79; font-size:14px; line-height:21px; margin:5px 0; font-family:Cairo, arial, 'helvetica neue', helvetica, sans-serif;">${attendorId}</p>
-                    <a  style="display:inline-block; padding:10px 30px; background-color:#274a79; color:#FFFFFF; font-size:20px; border-radius:6px; text-decoration:none; margin:10px 0; font-family:Cairo, arial, 'helvetica neue', helvetica, sans-serif;">الاحد 1/يونيو/2025</a>
-                    <a  style="display:inline-block; padding:10px 30px; background-color:#274a79; color:#FFFFFF; font-size:20px; border-radius:6px; text-decoration:none; margin:10px 0; font-family:Cairo, arial, 'helvetica neue', helvetica, sans-serif;">مساء 6:00</a>
-                    <p style="color:#274a79; font-size:14px; line-height:21px; margin:5px 0; font-family:Cairo, arial, 'helvetica neue', helvetica, sans-serif;">الموقع:المدرج الخارجي</p>
-                  </div>
-                </div>
-              </div>
-            </body>
-            </html>
-            `
-        });
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>دعوة اليوم الوطني للتقنية</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f0f0f0;
+        }
 
-        console.log("mail sent successfully");
+        table {
+            border-collapse: collapse;
+        }
 
-    } catch (error) {
-        console.error(error);
-    }
+        .email-container {
+            width: 100%;
+            background-image: url('https://eikacyz.stripocdn.email/content/guids/CABINET_f004ac5f63ff0fb7bde7bc947cf82e7ebd8b5e182c5c91320c05216fc310db13/images/wallpaper_4k_v2_s.jpeg');
+            background-size: cover;
+            background-position: center top;
+            background-repeat: no-repeat;
+            padding: 40px 0;
+        }
+
+        .email-content {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: transparent;
+            text-align: center;
+        }
+
+        .logo {
+            width: 150px;
+            margin: 0 auto 20px;
+        }
+
+        .heading {
+            color:  #27a5467;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .subheading {
+            color:  #27a5467;
+            font-size: 20px;
+            margin: 0 0 20px;
+        }
+
+        .title {
+            font-size: 36px;
+            color:  #27a5467;
+            font-weight: bold;
+            margin: 40px 0 10px;
+        }
+
+        .description {
+            color:  #27a5467;
+            font-size: 20px;
+            margin: 10px 0;
+        }
+
+        .code {
+            font-size: 50px;
+            color:  #27a5467;
+            margin: 20px 0;
+        }
+
+        .footer-note {
+            color: #000;
+            font-size: 18px;
+            margin-bottom: 40px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="email-container">
+        <table class="email-content" cellpadding="0" cellspacing="0">
+            <tr>
+                <td align="center">
+                    <img 
+                    src="https://eikacyz.stripocdn.email/content/guids/CABINET_f004ac5f63ff0fb7bde7bc947cf82e7ebd8b5e182c5c91320c05216fc310db13/images/art_logo_2_crc.png"
+                    class="logo" alt="Logo" />
+                    <p class="heading">اليوم الوطني لتقنية المعلومات</p>
+                    <p class="subheading">NATIONAL TECHNOLOGY DAY</p>
+                    <p class="title">شكراً </p>
+                    <p class="title">${firstname} </p>
+                    <p class="title">على اهتمامك بفعاليتنا</p>
+                    <p class="description">رقم التسجيل الخاص بك هو</p>
+                    <p class="code">${attendorId}</p>
+                    <p class="footer-note">نحن متحمسون للقاءك</p>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>
+    `;
+
+    await transporter.sendMail({
+      from: process.env.ADMIN_EMAIL,
+      to: email,
+      subject: "دعوة للمشاركة في اليوم الوطني لتقنية المعلومات",
+      html: htmlContent
+    });
+
+    console.log("Mail sent successfully");
+  } catch (error) {
+    console.error("Email sending error:", error.message);
+  }
 };

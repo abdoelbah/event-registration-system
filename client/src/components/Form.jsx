@@ -9,62 +9,60 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Input,
   Button,
-  Checkbox,
   Typography,
 } from "@material-tailwind/react";
 import { Mail, ProfileCircle } from "iconoir-react";
-const API_URL = import.meta.env.VITE_API_URL
 
+const API_URL = import.meta.env.VITE_API_URL;
 
 const formSchema = z.object({
-  firstName: z.string().min(1, { message: "الاسم الأول مطلوب" }),
-  lastName: z.string().min(1, { message: "اسم العائلة مطلوب" }),
+  firstname: z.string().min(1, { message: "الاسم الأول مطلوب" }),
+  lastname: z.string().min(1, { message: "اسم العائلة مطلوب" }),
   email: z.string().email({ message: "البريد الإلكتروني غير صالح" }),
 });
+
 const TextField = React.forwardRef(
-    ({ label, error, icon: Icon, ...props }, ref) => {
-      const id = React.useId();
-  
-      return (
-        <Typography
-          as="label"
-          htmlFor={id}
-          className="mb-6 block space-y-1.5 text-white text-right"
-        >
-          <span className="text-md font-semibold text-white font-tajawal">{label}</span>
-          <Input
-            ref={ref}
-            {...props}
-            id={id}
-            isError={Boolean(error)}
-            color={error ? "error" : "primary"}
-            dir="rtl"
-            className="text-white placeholder-gray-400 font-tajawal text-sm" 
-          >
-            <Input.Icon>
-              <Icon className="h-full w-full text-white" />
-            </Input.Icon>
-          </Input>
-          {error && (
-            <Typography type="small" color="error">
-              {error}
-            </Typography>
-          )}
-        </Typography>
-      );
-    }
-  );
-  
+  ({ label, error, icon: Icon, ...props }, ref) => {
+    const id = React.useId();
+
+    return (
+      <Typography
+        as="label"
+        htmlFor={id}
+        className="mb-6 block space-y-1.5 text-white text-right font-tajawal"
+      >
+        <span className="text-md font-semibold">{label}</span>
+        <Input
+          ref={ref}
+          {...props}
+          id={id}
+          isError={Boolean(error)}
+          color={error ? "red" : "blue"}
+          dir="rtl"
+          className="text-white placeholder-gray-400 text-sm"
+          icon={<Icon className="h-5 w-5 text-white" />}
+        />
+        {error && (
+          <Typography variant="small" color="red">
+            {error}
+          </Typography>
+        )}
+      </Typography>
+    );
+  }
+);
+
 export default function FormDemo() {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset
   } = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
+      firstname: "",
+      lastname: "",
       email: "",
     },
   });
@@ -72,40 +70,65 @@ export default function FormDemo() {
   async function onSubmit(data) {
     try {
       const response = await axios.post(`${API_URL}/register`, data);
-      console.log("تم الإرسال بنجاح:", response.data);
+
+      // Handle custom API response format
+      if (response.status === 200) {
+        const resData = response.data;
+        if (resData?.msg && resData.msg.toLowerCase().includes("already")) {
+          alert("هذا المستخدم مسجل بالفعل.");
+        } else {
+          alert("تم التسجيل بنجاح!");
+          reset();
+        }
+      } else {
+        alert("حدث خطأ غير متوقع في الخادم.");
+      }
     } catch (error) {
-      console.error("حدث خطأ أثناء الإرسال:", error);
+      // Handle both client and server errors
+      if (error.response) {
+        // Server responded with an error status code
+        alert(`خطأ من الخادم: ${error.response.data?.msg || "حدث خطأ أثناء الإرسال."}`);
+      } else if (error.request) {
+        // Request made but no response received
+        alert("تعذر الوصول إلى الخادم. تحقق من الاتصال.");
+      } else {
+        // Other error (config, etc.)
+        alert("حدث خطأ: " + error.message);
+      }
+      console.error("تفاصيل الخطأ:", error);
     }
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-md text-right ">
+    <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-md text-right">
       <TextField
         label="الاسم الأول"
-        error={errors.firstName?.message}
+        error={errors.firstname?.message}
         icon={ProfileCircle}
-        placeholder=" إسمك الأول"
-        {...register("firstName")}
+        placeholder="إسمك الأول"
+        {...register("firstname")}
       />
       <TextField
         label="اسم العائلة"
-        error={errors.lastName?.message}
+        error={errors.lastname?.message}
         icon={ProfileCircle}
         placeholder="إسم العائلة"
-        {...register("lastName")}
+        {...register("lastname")}
       />
       <TextField
         type="email"
         label="البريد الإلكتروني"
         error={errors.email?.message}
-        icon={Mail}bg-gradient-to-br from-purple-700 to-blue-600
+        icon={Mail}
         placeholder="example@example.com"
         {...register("email")}
       />
-
-      <Button type="submit" className="w-full bg-gradient-to-br from-purple-700 to-blue-600 font-tajawal text-md">
-    إنضمام الى الحدث  
-        </Button>
+      <Button
+        type="submit"
+        className="w-full bg-gradient-to-br from-purple-700 to-blue-600 font-tajawal text-md"
+      >
+        إنضمام إلى الحدث
+      </Button>
     </form>
   );
 }

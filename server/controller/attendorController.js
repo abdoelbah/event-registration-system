@@ -16,30 +16,28 @@ exports.Register = async (req, res) => {
         }
 
         const attendor =await attendorModel.findOne({email})
+
         if(attendor){
             res.json({
                 msg:"this user is already registered"
             })
             return
         }
-
-
-
         const newAttendor = await attendorModel.create({
             firstname,
             lastname,
             email
         })
+        console.log(newAttendor._id)
         if(newAttendor){
             res.json({
                 msg:"Attendor registered"
             })
             
-                sendEmailTicket(firstname,email,newAttendor.attendorId)
+                sendEmailTicket(newAttendor)
+
+            return
         }
-
-
-        
     } catch (error) {
     console.log(error.message)
     }
